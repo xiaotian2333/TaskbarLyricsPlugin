@@ -6,6 +6,56 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 TaskbarLyricsPlugin 是一个适用于 Salt Player For Windows (SPW) 的任务栏歌词插件，支持 Steam 版和微软商店版。这是一个基于 Kotlin/JVM 开发的插件，使用 PF4J 插件框架。
 
+## 项目目录结构
+
+```
+TaskbarLyricsPlugin/
+├── .git/                 # Git 版本控制目录
+├── .gradle/             # Gradle 缓存目录（构建时生成）
+├── build/               # 构建输出目录
+├── gradle/              # Gradle wrapper 相关文件
+├── src/                 # 源代码目录
+├── build.gradle.kts     # Gradle 构建脚本（Kotlin DSL）
+├── settings.gradle.kts  # Gradle 项目设置
+├── gradlew              # Gradle wrapper Unix/Linux 脚本
+├── gradlew.bat          # Gradle wrapper Windows 批处理脚本
+├── .gitignore           # Git 忽略文件配置
+├── CLAUDE.md            # Claude Code 项目说明文档
+├── README.md            # 项目说明文档
+└── LICENSE              # 项目许可证文件
+```
+
+### 源代码结构 (`src/`)
+
+```
+src/
+└── main/
+    ├── java/com/zmxl/taskbarlyrics/  # Kotlin 源代码（虽然放在 java 目录下）
+    │   ├── TaskbarLyricsPlugin.kt     # 主插件类
+    │   ├── config/
+    │   │   └── ConfigManager.kt       # 配置管理器
+    │   ├── control/
+    │   │   └── SmtcController.kt      # 系统媒体传输控制
+    │   ├── playback/
+    │   │   ├── PlaybackExtension.kt   # 播放扩展点
+    │   │   └── PlaybackStateHolder.kt # 播放状态管理
+    │   └── server/
+    │       └── HttpServer.kt          # HTTP API 服务器
+    └── resources/
+        └── preference_config.json     # 插件配置定义文件
+```
+
+### 技术栈
+
+- **语言**: Kotlin 1.9.22
+- **JVM版本**: Java 21
+- **构建工具**: Gradle 8.5
+- **主要框架**:
+  - SPW Workshop API (Salt Player插件框架)
+  - Jetty (HTTP服务器)
+  - JNA (Windows API调用)
+  - Gson (JSON处理)
+
 ## 构建和开发命令
 
 ### 构建插件
@@ -134,6 +184,35 @@ HTTP 服务器提供的主要端点：
 - 包含编译后的类文件和所有依赖项
 - 插件清单包含必要的元数据
 - 可通过 SPW 的模组管理系统导入
+
+## 目录文件说明
+
+### 根目录文件详细说明
+
+- **.gitignore** - Git 版本控制忽略文件配置，排除构建产物等不需要跟踪的文件
+- **gradle/wrapper/** - Gradle Wrapper 相关文件，确保项目使用统一的 Gradle 版本
+- **gradlew** 和 **gradlew.bat** - Gradle Wrapper 脚本，分别用于 Unix/Linux 和 Windows 系统
+- **LICENSE** - 项目许可证文件，规定了代码的使用条款
+
+### 构建相关文件
+
+- **build.gradle.kts** - Gradle 构建脚本（使用 Kotlin DSL），定义了：
+  - 项目插件和依赖
+  - Java/Kotlin 版本配置（Java 21）
+  - 插件元数据（ID、版本、提供商等）
+  - 构建任务（编译、打包为插件等）
+
+- **settings.gradle.kts** - Gradle 项目设置文件，配置了：
+  - 插件管理仓库（Maven Central、JitPack）
+  - 依赖解析仓库
+  - 项目名称
+
+### 源代码组织
+
+项目采用标准的 Maven/Gradle 项目结构，所有源代码都在 `src/main/` 目录下：
+
+1. **java/** - 虽然 Kotlin 代码放在这个目录下，但这是 Java 项目的标准约定
+2. **resources/** - 资源文件目录，包含配置文件等
 
 ## 相关资源
 
